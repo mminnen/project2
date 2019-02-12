@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 
-
 {% block script %}
-<script src="{{ url_for('static', filename='channel.js') }}"></script>
+<script src="{{ url_for('static', filename='rooms.js') }}"></script>
 {% endblock %}
 {% block head %}
 {% endblock %}
@@ -14,13 +13,25 @@
  <h1>This is CS50w - Project 2</h1>
  <p>A Chatbox using websockets.</p>
 {% endblock %}
-
+{% block sidebar_left %}
+ {% for each_channel in my_channels %}
+  <div class="alert alert-info">
+  {{ each_channel }}
+  </div>
+ {% endfor %}
+{% endblock %}
 {% block body %}
 <h2>Join or create a channel....</h2>
 <h5 id="welcome_message"></h5>
-<form id="form">
-<input id="channel" autocomplete="off" autofocus placeholder="Create a channel..." type="text">
-<input id="submit" type="submit">
+<form id="form" action="{{ url_for('channels') }}" method="post">
+<div class="form-group row">
+<div class="col-xs-2">
+<input id=channel_name class="form-control" type="text" name="new_channel" placeholder="Create a new channel...">
+</div>
+</div>
+<div class="form-group">
+<button id=submit_channel class="btn btn-primary">Create</button>
+</div>
 </form>
 <p></p>
 {% endblock %}
