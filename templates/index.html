@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+
+{% block script %}
+<script src="{{ url_for('static', filename='username.js') }}"></script>
+{% endblock %}
+{% block head %}
+{% endblock %}
+{% block title %}
+<title>Home - Welcome to Flack.</title>
+{% endblock %}
+
+{% block banner %}
+ <h1>This is CS50w - Project 2</h1>
+ <p>A Chatbox using websockets.</p>
+{% endblock %}
+
+{% block body %}
+<h2>Welcome to Flack....</h2>
+<h5 id="welcome_message"></h5>
+<form id="form">
+<input id="username" autocomplete="off" autofocus placeholder="Choose your name..." type="text">
+<input id="submit" type="submit">
+</form>
+<p></p>
+{% endblock %}
