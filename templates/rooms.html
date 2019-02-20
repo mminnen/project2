@@ -16,7 +16,7 @@
 {% block sidebar_left %}
  {% for each_channel in my_channels %}
   <div class="alert alert-info">
-  {{ each_channel }}
+  <a href="" class="channel-links" data-channel="{{ each_channel }}">{{ each_channel}}</a>
   </div>
  {% endfor %}
 {% endblock %}
