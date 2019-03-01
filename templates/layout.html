@@ -14,39 +14,32 @@
 {% block script %}
 {% endblock %}
 </head>
+
 <body>
-<div class="jumbotron text-center p-3 mb-2 bg-success text-white" style="margin-bottom:0">  
+<div class="jumbotron text-center p-3 mb-0 bg-success text-white" style="margin-bottom:0">
    {% block banner %}
    {% endblock %}
 </div>
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-   <a class="navbar-brand" href={{ url_for('index') }}>Home</a>
-   <a class="navbar-brand" href={{ url_for('rooms') }}>Rooms</a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-   <span class="navbar-toggler-icon"></span>
-   </button>
-   <div class="collapse navbar-collapse" id="collapsibleNavbar">
-   </div>  
-</nav>
-<div class="container" style="margin-top:30px">
-</div>
-<div class="row">
-   <div class="col-sm-2">
-   {% block sidebar_left %}
-   {% endblock %}
-   </div>
-   <div class="col-sm-10">
-   {% block body %}
-   {% endblock %}
-   </div>
-</div>
+
+{% block controls %}
+
+
+{% endblock %}
+
+
+{% block body %}
 <div class="row">
    <div class="col-sm-12 bg-info text-center text-light">
-<p id=message_bar></p>
-{% block bar_bottom %}
-{% endblock %}
+    <p id=message_bar></p>
    </div>
 </div>
+
+{% endblock %}
+
+
+{% block bar_bottom %}
+
+{% endblock %}
 <div class="jumbotron text-center p-3 mb-2 bg-light text-muted" style="margin-bottom:0">
 <p>(c) 2019 Martijn Minnen - CS50w Project2</p>
 </div>

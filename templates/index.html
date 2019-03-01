@@ -1,26 +1,82 @@
 {% extends "layout.html" %}
 
-
 {% block script %}
-<script src="{{ url_for('static', filename='username.js') }}"></script>
+    <script src="{{ url_for('static', filename='username.js') }}"></script>
+    <script src="{{ url_for('static', filename='rooms.js') }}"></script>
 {% endblock %}
 {% block head %}
 {% endblock %}
 {% block title %}
-<title>Home - Welcome to Flack.</title>
+<title>Rooms - Join or create a channel.</title>
 {% endblock %}
 
 {% block banner %}
  <h1>This is CS50w - Project 2</h1>
  <p>A Chatbox using websockets.</p>
 {% endblock %}
+{% block controls %}
+    <div class="jumbotron text-center p-2 bg mt-0 text-primary">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+        <h5 id="welcome_message"></h5>
+    </div>
+    </div>
+    </div>
 
-{% block body %}
-<h2>Welcome to Flack....</h2>
-<h5 id="welcome_message"></h5>
-<form id="form">
-<input id="username" autocomplete="off" autofocus placeholder="Choose your name..." type="text">
-<input id="submit" type="submit">
-</form>
-<p></p>
+      <div class="row">
+        <div class="col-sm-3">
+            <form class="form-inline" id="form" action="{{ url_for('channels') }}" method="post">
+                <input class="col-sm-8" id=channel_name class="form-control" type="text" name="new_channel" placeholder="Create a new channel...">
+                <button class="col-sm-4 btn btn-primary"id=submit_channel>Create</button>
+             </form>
+        </div>
+        <div class="col-sm-6">
+              <b>Send message button here!</b>
+        </div>
+            <div class="col-sm-1">
+        </div>
+      </div>
+{% endblock %}
+
+
+{%  block body %}
+  <!-- The Modal -->
+  <div class="modal" id="prompt_username">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">You need to select a name.</h4>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form id="input_name">
+                <input id="username" autocomplete="off" autofocus placeholder="Choose your name..." type="text">
+            </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <input id="submit_name" type="submit" value="select">
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-3">
+                 {% for each_channel in my_channels %}
+                 <div class="alert alert-info">
+                 <a href="" class="channel-links" data-channel="{{ each_channel }}"># {{  each_channel}}</a>
+                 </div>
+             {% endfor %}
+    </div>
+    <div class="col-sm-9">
+            <p>Soon text messages will appear here...</p>
+    </div>
+   </div>
 {% endblock %}
