@@ -39,7 +39,8 @@ def handle_message(data):
     username = data["username"]
     message = data["message"]
     date = datetime.now().strftime("%a %H:%M ")
-    new_message = message + ' (' + username + ', '+ date +')'
+    sid = request.sid
+    new_message = sid+message + ' (' + username + ', '+ date +')'
     room = data['room']
     emit("cast message", new_message, room=room)
 
@@ -59,7 +60,8 @@ def on_join(data):
     username = data["username"]
     room = data["room"]
     join_room(room)
-    message = username + ' has joined room ' + room
+    sid = request.sid
+    message = sid+username + ' has joined room ' + room
 #    emit("cast message", message, broadcast=True)
     emit('cast message', message, room=room)
 
