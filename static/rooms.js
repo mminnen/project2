@@ -16,26 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
 
-
 	     // wait for click on .list class
 	            document.querySelectorAll(".channel-links").forEach(link => {
                     link.onclick = () => {
                         const selected_channel = link.dataset.channel;
                         localStorage.setItem('selected_channel', selected_channel);
-                        // need to change to join a room
-                        // socket.emit('send message',{'message': 'Howdie', 'room': selected_channel, 'username':username});
+                        // Clear the messages before joining the new channel
+                        document.querySelector('#messages').delete(li)
+                        // join the new room
                         socket.emit('join', {'room': selected_channel, 'username': username});
-                        // socket.emit('send message', {'message': username + ' has joined room ' + selected_channel, 'room': selected_channel, 'username': username});
+                        // do not reload
                         return false;
                     };
                 });
 
 	if (localStorage.getItem('selected_channel'))
     		{
-            //join the right room straight away
+            // when user is known and room is stored, join the right room straight away (e.g. after opening the page)
             const selected_channel = localStorage.getItem('selected_channel');
             socket.emit('join', {'room': selected_channel, 'username': username});
 		}
+	// if no room is stored locally, join the main channel
 	else localStorage.setItem('selected_channel', 'Main Channel');
 
 });

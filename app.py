@@ -1,21 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from flask import Flask, render_template, request, redirect, url_for
+from flask_socketio import SocketIO, emit, join_room
 from datetime import datetime
+from collections import defaultdict
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 my_channels = {"Main Channel"}
-messages = ["test1", "test2"]
+all_messages = defaultdict(list)
 
-# Not all pages get refreshed after creating a new channel
-# Messages need to be stored
-# Do not allow empty messages
-# Personal touch, different styling of messages when username is localstorage
-# limit message list to 100 items
-# delete comments and unnecessary routes
-# load saved channels
+
 
 @app.route("/")
 def index():
@@ -29,48 +24,38 @@ def channels():
     return redirect(url_for("index"))
 
 
-@app.route("/messages", methods=['GET', 'POST'])
-def messages():
-    if request.method == 'GET':
-                return jsonify({"user": "User", "date": "xx-xx-xxxx", "messages": messages})
-
 @socketio.on('send message')
 def handle_message(data):
     username = data["username"]
     message = data["message"]
     date = datetime.now().strftime("%a %H:%M ")
+    # define unique session id
     sid = request.sid
     new_message = sid+message + ' (' + username + ', '+ date +')'
+    # save the message
     room = data['room']
+    if len(all_messages[room]) >= 100:
+        del all_messages[room][0]
+    all_messages[room].append(new_message)
+    # print(all_messages)
     emit("cast message", new_message, room=room)
 
-@socketio.on('json')
-def handle_json(json):
-    send(json, json=True)
-
-@socketio.on('my event')
-def handle_my_custom_event(json):
-    emit('my response', json)
-
-# https://flask-socketio.readthedocs.io/en/latest/
-# cleanup @socketio.on decorators and add chat room functionality
 
 @socketio.on('join')
 def on_join(data):
     username = data["username"]
     room = data["room"]
     join_room(room)
+    # define unique session id
     sid = request.sid
     message = sid+username + ' has joined room ' + room
-#    emit("cast message", message, broadcast=True)
+    # emit("cast message", message, broadcast=True)
+    # send all messages to user joining the channel
+    for i in all_messages[room]:
+        emit('cast message', i, room=sid)
     emit('cast message', message, room=room)
 
-@socketio.on('leave')
-def on_leave(data):
-    username = data['username']
-    room = data['room']
-    leave_room(room)
-    send(username + ' has left the room.', room=room)
+
 
 
 if __name__ == '__main__':

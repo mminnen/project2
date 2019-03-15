@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Enable button only if there is text in the input field
+        document.querySelector('#message').onkeyup = () => {
+    	if (document.querySelector('#message').value.length > 0)
+        	document.querySelector('#submit_message').disabled = false;
+        else
+        	document.querySelector('#submit_message').disabled = true;
+        };
+
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -19,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // console.log(socket.sid);
                     // Clear input field and disable button again
                     document.querySelector('#message').value = '';
-                    // document.querySelector('#submit_message').disabled = true;
+                    document.querySelector('#submit_message').disabled = true;
 
                     // Do not reload the page
                     return false;
@@ -51,6 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
        else li.className += "list-group-item list-group-item-info";
 
        // Write the message to screen
-       document.querySelector('#messages').append(li);
+       document.querySelector('#messages').prepend(li);
     });
 });
